@@ -1,145 +1,32 @@
-<?php
-session_start();
-
-// Tangkap data dari form login
-if (isset($_POST['submit'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $password = htmlspecialchars($_POST['password']);
-
-    // Contoh data akun manual (bisa diubah sesuai kebutuhan)
-    $akun = [
-        'admin' => '12345',
-        'siswa' => 'abcde'
-    ];
-
-    if (isset($akun[$username]) && $akun[$username] === $password) {
-        $_SESSION['username'] = $username;
-        header("Location: dashboard.php");
-        exit;
-    } else {
-        $error = "Username atau password salah!";
-    }
-}
-?>
+<?php require_once 'config.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      position: relative;
-    }
-
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-    }
-
-    .circle-top {
-      width: 250px;
-      height: 250px;
-      background-color: #739ac9;
-      top: -100px;
-      left: -100px;
-    }
-
-    .circle-top::after {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background-color: #16384c;
-      border-radius: 50%;
-      top: 80px;
-      left: 150px;
-    }
-
-    .circle-bottom {
-      width: 250px;
-      height: 250px;
-      background-color: #739ac9;
-      bottom: -100px;
-      right: -100px;
-    }
-
-    .circle-bottom::after {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background-color: #16384c;
-      border-radius: 50%;
-      top: 80px;
-      left: -50px;
-    }
-
-    .container {
-      background-color: #16384c;
-      padding: 30px;
-      border-radius: 15px;
-      width: 300px;
-      text-align: center;
-    }
-
-    h2 {
-      color: white;
-      margin-bottom: 20px;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-
-    input {
-      background-color: #d9d9d9;
-    }
-
-    button {
-      background-color: #325d79;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #24495e;
-    }
-
-    .error {
-      color: #ffb3b3;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Konseling SMK</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background-color: #4CAF50; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; margin-top: 10px; }
+    </style>
 </head>
 <body>
-  <div class="circle circle-top"></div>
-  <div class="circle circle-bottom"></div>
-
-  <div class="container">
-    <h2>Login</h2>
-    <?php if (!empty($error)): ?>
-      <div class="error"><?= $error ?></div>
-    <?php endif; ?>
-    <form method="POST" action="">
-      <input type="text" name="username" placeholder="Email or Username" required>
-      <input type="password" name="password" placeholder="Password" required>
-      <button type="submit" name="submit">Login</button>
-    </form>
-  </div>
+    <div class="container">
+        <h2>Login Konseling SMK</h2>
+        <form action="process_login.php" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <?php if (isset($_SESSION['error'])) { echo '<p class="error">' . $_SESSION['error'] . '</p>'; unset($_SESSION['error']); } ?>
+        <p><small>Contoh: siswa1 / password123 | guru1 / password123</small></p>
+     
+    <div class="back-link">
+    <a href="register.php">Belum punya akun? Register sekarang</a>
+</div>
+    </div>
 </body>
 </html>
